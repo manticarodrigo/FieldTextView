@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FieldTextView : UITextView {
+class FieldTextView : UITextView, UITextViewDelegate {
     
     override var contentSize: CGSize {
         didSet {
@@ -19,7 +19,7 @@ class FieldTextView : UITextView {
     }
     
     let placeholderLabel = UILabel()
-    var placeholder = String()
+    var placeholder: String?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -31,9 +31,9 @@ class FieldTextView : UITextView {
         self.setupView()
     }
     
-    func setupView() {
-        self.placeholderLabel.text = self.placeholder
-        self.placeholderLabel.textAlignment = .center
+    private func setupView() {
+        self.placeholderLabel.text = self.placeholder ?? "Tap to start typing..."
+        self.placeholderLabel.textAlignment = self.textAlignment
         self.placeholderLabel.font = self.font
         self.placeholderLabel.sizeToFit()
         var topCorrection = (self.bounds.size.height - self.contentSize.height * self.zoomScale) / 2.0

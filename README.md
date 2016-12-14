@@ -1,18 +1,30 @@
 # FieldTextView
 A UITextView class that behaves like a UITextField, but with multi-line word wrapping.
 
-<b>SETUP</b>
-* Set placeholder label text.
-* Set text view text alignment to center, or placeholder label text alignment to desired value.
-* Set single-line behavior with the following code (resign responder on return) in your view contoller:
+<H2>SETUP</H2>
+* Drop FieldTextView.swift file into project folder and add to project.
+* Create a UITextField object and set it's class to FieldTextView.
+* Set FieldTextView.placeholder text in viewDidLoad().
+* Set FieldTextView.textAlignment to desired value.
+* Set your UITextView delegate in viewDidLoad() and implement the methods:
+
 ```swift
-func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    if text == "\n" {
-        textView.resignFirstResponder()
-        return false
-    } else {
-        return true
+
+func textViewDidChange(_ textView: UITextView) {
+    if let fieldTextView = textView as? FieldTextView {
+        fieldTextView.placeholderLabel.isHidden = !textView.text.trimmingCharacters(in: .whitespaces).isEmpty
     }
 }
+
+func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    if let fieldTextView = textView as? FieldTextView {
+        if text == "\n" {
+            fieldTextView.resignFirstResponder()
+            return false
+        }
+    }
+    return true
+}
+
 ```
-** Remember to set your UITextView delegate
+* That's it! Enjoy :)
